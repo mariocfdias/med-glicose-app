@@ -34,11 +34,14 @@ export function GlucoseChart({ data, tone, compact = false, forecast = true }) {
   return (
     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ display: 'block' }}>
       <rect x={pad.l} y={Y(180)} width={w - pad.l - pad.r} height={Y(70) - Y(180)} fill={T.accentSoft} opacity="0.5"/>
-      {[70, 180].map(g => (
-        <line key={g} x1={pad.l} x2={w - pad.r} y1={Y(g)} y2={Y(g)} stroke={T.line2} strokeDasharray="2 4"/>
-      ))}
-      {[70, 180].map(g => (
-        <text key={g} x={pad.l - 4} y={Y(g) + 3} fill={T.textMute} fontSize="9" textAnchor="end">{g}</text>
+      {[
+        { v: 70,  color: T.danger },
+        { v: 180, color: T.warn },
+      ].map(t => (
+        <g key={t.v}>
+          <line x1={pad.l} x2={w - pad.r} y1={Y(t.v)} y2={Y(t.v)} stroke={t.color} strokeOpacity="0.7" strokeDasharray="2 4"/>
+          <text x={pad.l - 4} y={Y(t.v) + 3} fill={t.color} opacity="0.9" fontSize="9" textAnchor="end">{t.v}</text>
+        </g>
       ))}
       {!compact && [
         { t: minX, label: '−8h' },
