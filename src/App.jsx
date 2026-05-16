@@ -13,12 +13,36 @@ import { BottomNav } from './components/BottomNav.jsx';
 import { TweaksPanel } from './components/TweaksPanel.jsx';
 import { BottomSheet } from './components/BottomSheet.jsx';
 
+const DEVICE_W = 430;
+const DEVICE_H = 932;
+
 function AppContent() {
   const { T, mode, toggle } = useTheme();
   const [tab, setTab] = useState('home');
   const [stateKey, setStateKey] = useState('rising');
-  const [tweaksOpen, setTweaksOpen] = useState(true);
+  const [tweaksOpen, setTweaksOpen] = useState(false);
   const [registerSheet, setRegisterSheet] = useState({ open: false, type: null });
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const fit = () => {
+      const vw = (window.visualViewport?.width) ?? window.innerWidth;
+      const vh = (window.visualViewport?.height) ?? window.innerHeight;
+      const sw = Math.max(0, vw - 24);
+      const sh = Math.max(0, vh - 80);
+      const s = Math.min(sw / DEVICE_W, sh / DEVICE_H, 1);
+      setScale(Number.isFinite(s) && s > 0 ? s : 1);
+    };
+    fit();
+    window.addEventListener('resize', fit);
+    window.addEventListener('orientationchange', fit);
+    window.visualViewport?.addEventListener('resize', fit);
+    return () => {
+      window.removeEventListener('resize', fit);
+      window.removeEventListener('orientationchange', fit);
+      window.visualViewport?.removeEventListener('resize', fit);
+    };
+  }, []);
 
   useEffect(() => {
     const handler = (e) => {
@@ -41,38 +65,54 @@ function AppContent() {
                : <HomeScreen stateKey={stateKey} setStateKey={setStateKey} onRegister={openRegister}/>;
 
   return (
-    <IOSDevice dark={mode === 'dark'} width={430} height={932}>
-      <div data-screen-label="01 Home / Predição" style={{
-        position: 'absolute', inset: 0,
-        background: T.bg,
-        color: T.textHi,
-        fontFamily: '-apple-system, "SF Pro Display", "Inter", system-ui, sans-serif',
-        display: 'flex', flexDirection: 'column',
+    <>
+      <div style={{
+        width: DEVICE_W * scale,
+        height: DEVICE_H * scale,
+        position: 'relative',
+        flexShrink: 0,
       }}>
-        <div className="sg-scroll" style={{
-          flex: 1, overflowY: 'auto', overflowX: 'hidden',
-          paddingTop: 54,
-          scrollbarWidth: 'none', msOverflowStyle: 'none',
+        <div style={{
+          width: DEVICE_W,
+          height: DEVICE_H,
+          transform: `scale(${scale})`,
+          transformOrigin: 'top left',
         }}>
-          {screen}
-        </div>
-        <BottomNav tab={tab} setTab={setTab} onPrimaryAction={() => openRegister('menu')}/>
-      </div>
+          <IOSDevice dark={mode === 'dark'} width={DEVICE_W} height={DEVICE_H}>
+            <div data-screen-label="01 Home / Predição" style={{
+              position: 'absolute', inset: 0,
+              background: T.bg,
+              color: T.textHi,
+              fontFamily: '-apple-system, "SF Pro Display", "Inter", system-ui, sans-serif',
+              display: 'flex', flexDirection: 'column',
+            }}>
+              <div className="sg-scroll" style={{
+                flex: 1, overflowY: 'auto', overflowX: 'hidden',
+                paddingTop: 54,
+                scrollbarWidth: 'none', msOverflowStyle: 'none',
+              }}>
+                {screen}
+              </div>
+              <BottomNav tab={tab} setTab={setTab} onPrimaryAction={() => openRegister('menu')}/>
+            </div>
 
-      <BottomSheet open={registerSheet.open} onClose={closeRegister}>
-        {registerSheet.type === 'menu' && (
-          <RegisterMenu onPick={openRegister} onClose={closeRegister}/>
-        )}
-        {registerSheet.type === 'meal' && (
-          <MealScreen onClose={closeRegister} onSave={() => {}}/>
-        )}
-        {registerSheet.type === 'insulin' && (
-          <InsulinScreen onClose={closeRegister} onSave={() => {}} stateKey={stateKey}/>
-        )}
-        {registerSheet.type === 'activity' && (
-          <ActivityScreen onClose={closeRegister} onSave={() => {}}/>
-        )}
-      </BottomSheet>
+            <BottomSheet open={registerSheet.open} onClose={closeRegister}>
+              {registerSheet.type === 'menu' && (
+                <RegisterMenu onPick={openRegister} onClose={closeRegister}/>
+              )}
+              {registerSheet.type === 'meal' && (
+                <MealScreen onClose={closeRegister} onSave={() => {}}/>
+              )}
+              {registerSheet.type === 'insulin' && (
+                <InsulinScreen onClose={closeRegister} onSave={() => {}} stateKey={stateKey}/>
+              )}
+              {registerSheet.type === 'activity' && (
+                <ActivityScreen onClose={closeRegister} onSave={() => {}}/>
+              )}
+            </BottomSheet>
+          </IOSDevice>
+        </div>
+      </div>
 
       {tweaksOpen && (
         <TweaksPanel
@@ -85,7 +125,7 @@ function AppContent() {
           }}
         />
       )}
-    </IOSDevice>
+    </>
   );
 }
 

@@ -43,7 +43,7 @@ export function GlucoseChart({ data, tone, compact = false, forecast = true }) {
       {!compact && [
         { t: minX, label: '−8h' },
         { t: (minX + maxX) * 0.5, label: 'agora' },
-        { t: maxX, label: '+2h' },
+        { t: maxX, label: '+100m' },
       ].map((p, i) => {
         const lx = i === 1 ? nowX : X(p.t);
         return <text key={i} x={lx} y={h - 6} fill={T.textMute} fontSize="9" textAnchor="middle">{p.label}</text>;

@@ -15,7 +15,7 @@ export function RiskBanner({ risk, stateKey }) {
     ? (isLow ? 'Leitura abaixo do alvo' : 'Leitura acima do alvo')
     : (isLow ? `Possível queda em ${risk.whenMin} min` : `Possível alta em ~${Math.round(risk.whenMin / 10) * 10} min`);
 
-  const action = isImmediate ? 'Registrar leitura' : 'Ver detalhes';
+  const action = 'Ver detalhes';
 
   return (
     <div style={{

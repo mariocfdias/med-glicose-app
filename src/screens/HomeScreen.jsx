@@ -71,7 +71,7 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
           </div>
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 2 }}>
-              Previsão em 2h
+              Previsão em 100 min
             </div>
             <div style={{ fontSize: 15, color: T.textHi, fontWeight: 500, lineHeight: 1.35 }}>
               {s.forecastMessage}

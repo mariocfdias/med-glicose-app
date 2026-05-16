@@ -27,7 +27,7 @@ export const STATES = {
     label: 'Alta', tone: 'danger',
     now: 248, trend: 'subindo', trendArrow: '↑',
     forecastIn2h: 290, forecastConfidence: 81,
-    forecastMessage: 'Sua glicose deve continuar subindo nas próximas 2h.',
+    forecastMessage: 'Sua glicose deve continuar subindo nos próximos 100 min.',
     mascotMood: 'angry',
     timeInRange: 48,
     avg7: 186,
