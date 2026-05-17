@@ -24,6 +24,13 @@ const ITEMS = [
     desc: 'Caminhada, corrida, bicicleta ou outra',
     accent: 'ok',
   },
+  {
+    type: 'comment',
+    icon: 'note',
+    title: 'Comentário',
+    desc: 'Anote uma observação e a glicemia do momento',
+    accent: 'accent',
+  },
 ];
 
 export function RegisterMenu({ onPick, onClose }) {

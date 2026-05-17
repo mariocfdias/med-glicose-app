@@ -8,14 +8,16 @@ import { AlertSettingsScreen } from './AlertSettingsScreen.jsx';
 import { HistoryScreen } from './HistoryScreen.jsx';
 import { ShareScreen } from './ShareScreen.jsx';
 import { AboutScreen } from './AboutScreen.jsx';
+import { ModelInfoScreen } from './ModelInfoScreen.jsx';
 
 const ITEMS = [
-  { id: 'sensor',  icon: 'sensor', label: 'Sensor',        value: '10 dias restantes' },
-  { id: 'target',  icon: 'target', label: 'Meta',          value: '70 – 180 mg/dL' },
-  { id: 'alerts',  icon: 'bell',   label: 'Alertas',       value: '5 ativos' },
-  { id: 'history', icon: 'clock',  label: 'Histórico',     value: 'Ver tudo' },
-  { id: 'share',   icon: 'shield', label: 'Compartilhar',  value: 'Família e médico' },
-  { id: 'about',   icon: 'info',   label: 'Sobre',         value: 'Modelos de IA' },
+  { id: 'sensor',      icon: 'sensor', label: 'Sensor',         value: '10 dias restantes' },
+  { id: 'target',      icon: 'target', label: 'Meta',           value: '70 – 180 mg/dL' },
+  { id: 'alerts',      icon: 'bell',   label: 'Alertas',        value: '5 ativos' },
+  { id: 'history',     icon: 'clock',  label: 'Histórico',      value: 'Ver tudo' },
+  { id: 'share',       icon: 'shield', label: 'Compartilhar',   value: 'Família e médico' },
+  { id: 'about-model', icon: 'info',   label: 'Sobre o modelo', value: 'Modelos de IA' },
+  { id: 'about',       icon: 'info',   label: 'Sobre',          value: 'Versão e dispositivo' },
 ];
 
 export function MoreScreen() {
@@ -23,12 +25,13 @@ export function MoreScreen() {
   const [subview, setSubview] = useState(null);
   const close = () => setSubview(null);
 
-  if (subview === 'sensor')  return <SensorScreen onClose={close}/>;
-  if (subview === 'target')  return <TargetScreen onClose={close} onSave={() => {}}/>;
-  if (subview === 'alerts')  return <AlertSettingsScreen onClose={close} onSave={() => {}}/>;
-  if (subview === 'history') return <HistoryScreen onClose={close}/>;
-  if (subview === 'share')   return <ShareScreen onClose={close}/>;
-  if (subview === 'about')   return <AboutScreen onClose={close}/>;
+  if (subview === 'sensor')      return <SensorScreen onClose={close}/>;
+  if (subview === 'target')      return <TargetScreen onClose={close} onSave={() => {}}/>;
+  if (subview === 'alerts')      return <AlertSettingsScreen onClose={close} onSave={() => {}}/>;
+  if (subview === 'history')     return <HistoryScreen onClose={close}/>;
+  if (subview === 'share')       return <ShareScreen onClose={close}/>;
+  if (subview === 'about-model') return <ModelInfoScreen onClose={close}/>;
+  if (subview === 'about')       return <AboutScreen onClose={close}/>;
 
   return (
     <div style={{ padding: '8px 20px 24px', color: T.textHi }}>

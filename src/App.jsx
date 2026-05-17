@@ -9,6 +9,8 @@ import { RegisterMenu } from './screens/RegisterMenu.jsx';
 import { MealScreen } from './screens/MealScreen.jsx';
 import { InsulinScreen } from './screens/InsulinScreen.jsx';
 import { ActivityScreen } from './screens/ActivityScreen.jsx';
+import { CommentScreen } from './screens/CommentScreen.jsx';
+import { PatternDetailScreen } from './screens/PatternDetailScreen.jsx';
 import { BottomNav } from './components/BottomNav.jsx';
 import { TweaksPanel } from './components/TweaksPanel.jsx';
 import { BottomSheet } from './components/BottomSheet.jsx';
@@ -22,6 +24,9 @@ function AppContent() {
   const [stateKey, setStateKey] = useState('rising');
   const [tweaksOpen, setTweaksOpen] = useState(false);
   const [registerSheet, setRegisterSheet] = useState({ open: false, type: null });
+  const [patternSheet, setPatternSheet] = useState({ open: false, id: null });
+  const openPattern = (id) => setPatternSheet({ open: true, id });
+  const closePattern = () => setPatternSheet(s => ({ ...s, open: false }));
   const [scale, setScale] = useState(1);
 
   useEffect(() => {
@@ -59,7 +64,7 @@ function AppContent() {
   const openRegister = (type) => setRegisterSheet({ open: true, type });
   const closeRegister = () => setRegisterSheet(s => ({ ...s, open: false }));
 
-  const screen = tab === 'patterns' ? <PatternsScreen stateKey={stateKey}/>
+  const screen = tab === 'patterns' ? <PatternsScreen stateKey={stateKey} onOpenPattern={openPattern}/>
                : tab === 'more' ? <MoreScreen/>
                : tab === 'alerts' ? <AlertsScreen stateKey={stateKey}/>
                : <HomeScreen stateKey={stateKey} setStateKey={setStateKey} onRegister={openRegister}/>;
@@ -96,6 +101,10 @@ function AppContent() {
               <BottomNav tab={tab} setTab={setTab} onPrimaryAction={() => openRegister('menu')}/>
             </div>
 
+            <BottomSheet open={patternSheet.open} onClose={closePattern} heightPercent={80}>
+              <PatternDetailScreen id={patternSheet.id} onClose={closePattern}/>
+            </BottomSheet>
+
             <BottomSheet open={registerSheet.open} onClose={closeRegister}>
               {registerSheet.type === 'menu' && (
                 <RegisterMenu onPick={openRegister} onClose={closeRegister}/>
@@ -108,6 +117,9 @@ function AppContent() {
               )}
               {registerSheet.type === 'activity' && (
                 <ActivityScreen onClose={closeRegister} onSave={() => {}}/>
+              )}
+              {registerSheet.type === 'comment' && (
+                <CommentScreen onClose={closeRegister} onSave={() => {}} stateKey={stateKey}/>
               )}
             </BottomSheet>
           </IOSDevice>

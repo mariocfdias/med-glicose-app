@@ -27,6 +27,7 @@ export const Icon = ({ name, size = 20, color = 'currentColor', stroke = 2 }) =>
     case 'x': return <svg {...props}><path d="M6 6l12 12M18 6L6 18"/></svg>;
     case 'info': return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>;
     case 'drop': return <svg {...props}><path d="M12 3s-6 7-6 11a6 6 0 0012 0c0-4-6-11-6-11z"/></svg>;
+    case 'note': return <svg {...props}><path d="M4 5a2 2 0 012-2h9l5 5v11a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/></svg>;
     default: return null;
   }
 };

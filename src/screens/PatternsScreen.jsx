@@ -4,8 +4,9 @@ import { STATES, generateCurve } from '../data/states.js';
 import { GlucoseChart } from '../components/GlucoseChart.jsx';
 import { NightRiskGauge } from '../components/NightRiskGauge.jsx';
 import { PatternRow } from '../components/PatternRow.jsx';
+import { StatCard } from '../components/StatCard.jsx';
 
-export function PatternsScreen({ stateKey }) {
+export function PatternsScreen({ stateKey, onOpenPattern }) {
   const { T } = useTheme();
   const s = STATES[stateKey];
   const data = useMemo(() => generateCurve(stateKey), [stateKey]);
@@ -14,7 +15,13 @@ export function PatternsScreen({ stateKey }) {
       <div style={{ fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>Últimos 7 dias</div>
       <div style={{ fontSize: 24, fontWeight: 500, marginTop: 4 }}>Padrões</div>
 
-      <div style={{ marginTop: 18, background: T.bg2, border: '1px solid ' + T.line, borderRadius: 20, padding: '16px 16px 8px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginTop: 14 }}>
+        <StatCard label="No alvo" value={s.timeInRange + '%'} sub="hoje" tone={s.timeInRange >= 70 ? 'ok' : s.timeInRange >= 50 ? 'warn' : 'danger'}/>
+        <StatCard label="Média 7d" value={s.avg7} sub="mg/dL"/>
+        <StatCard label="Vs. ontem" value={(s.yesterdayDelta >= 0 ? '+' : '') + s.yesterdayDelta} sub="mg/dL" tone={Math.abs(s.yesterdayDelta) > 15 ? 'warn' : 'ok'}/>
+      </div>
+
+      <div style={{ marginTop: 14, background: T.bg2, border: '1px solid ' + T.line, borderRadius: 20, padding: '16px 16px 8px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
           <div style={{ fontSize: 13, color: T.text }}>Tempo no alvo</div>
           <div style={{ fontSize: 22, color: T.ok, fontWeight: 500 }}>{s.timeInRange}%</div>
@@ -37,11 +44,11 @@ export function PatternsScreen({ stateKey }) {
 
       <div style={{ marginTop: 14, fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>Padrões detectados</div>
 
-      <NightRiskGauge value={s.nightRisk}/>
+      <NightRiskGauge value={s.nightRisk} onClick={() => onOpenPattern?.('night-risk')}/>
 
-      <PatternRow icon="moon" title="Variações noturnas recorrentes" body="3 variações abaixo do alvo entre 02h e 04h nos últimos 7 dias." tone="warn"/>
-      <PatternRow icon="food" title="Pico pós‑almoço" body="Média de +84 mg/dL 60 min após o almoço." tone="warn"/>
-      <PatternRow icon="walk" title="Após caminhada" body="Glicose registrou queda média de 28 mg/dL nos 15 min seguintes." tone="ok"/>
+      <PatternRow icon="moon" title="Variações noturnas recorrentes" body="3 variações abaixo do alvo entre 02h e 04h nos últimos 7 dias." tone="warn" onClick={() => onOpenPattern?.('night-variation')}/>
+      <PatternRow icon="food" title="Pico pós‑almoço" body="Média de +84 mg/dL 60 min após o almoço." tone="warn" onClick={() => onOpenPattern?.('lunch-spike')}/>
+      <PatternRow icon="walk" title="Após caminhada" body="Glicose registrou queda média de 28 mg/dL nos 15 min seguintes." tone="ok" onClick={() => onOpenPattern?.('after-walk')}/>
     </div>
   );
 }

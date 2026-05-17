@@ -1,8 +1,9 @@
+import { useState, useRef, useEffect } from 'react';
 import { useTheme } from '../theme/ThemeProvider.jsx';
 import { Icon } from '../icons/Icon.jsx';
 import { STATES } from '../data/states.js';
 
-export function RiskBanner({ risk, stateKey }) {
+export function RiskBanner({ risk, stateKey, onDismiss }) {
   const { T } = useTheme();
   const s = STATES[stateKey];
   const isLow = risk.kind === 'low';
@@ -11,11 +12,20 @@ export function RiskBanner({ risk, stateKey }) {
   const c = tone === 'danger' ? T.danger : T.warn;
   const cSoft = tone === 'danger' ? T.dangerSoft : T.warnSoft;
 
+  const [notifyState, setNotifyState] = useState('idle');
+  const timeoutRef = useRef(null);
+  useEffect(() => () => timeoutRef.current && clearTimeout(timeoutRef.current), []);
+
+  const handleNotify = () => {
+    setNotifyState('scheduled');
+    timeoutRef.current = setTimeout(() => setNotifyState('idle'), 2000);
+  };
+
   const title = isImmediate
     ? (isLow ? 'Leitura abaixo do alvo' : 'Leitura acima do alvo')
     : (isLow ? `Possível queda em ${risk.whenMin} min` : `Possível alta em ~${Math.round(risk.whenMin / 10) * 10} min`);
 
-  const action = 'Ver detalhes';
+  const scheduled = notifyState === 'scheduled';
 
   return (
     <div style={{
@@ -39,18 +49,33 @@ export function RiskBanner({ risk, stateKey }) {
             }
           </div>
           <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
-            <button style={{
-              fontFamily: 'inherit',
-              padding: '8px 14px', borderRadius: 99,
-              background: c, color: T.bg,
-              fontSize: 12.5, fontWeight: 600, border: 'none', cursor: 'pointer'
-            }}>{action}</button>
-            <button style={{
-              fontFamily: 'inherit',
-              padding: '8px 14px', borderRadius: 99,
-              background: 'transparent', color: T.text,
-              fontSize: 12.5, fontWeight: 500, border: '1px solid ' + T.line2, cursor: 'pointer'
-            }}>Adiar 30 min</button>
+            <button
+              onClick={handleNotify}
+              disabled={scheduled}
+              style={{
+                fontFamily: 'inherit',
+                padding: '8px 14px', borderRadius: 99,
+                background: scheduled ? T.ok : c,
+                color: T.bg,
+                fontSize: 12.5, fontWeight: 600, border: 'none',
+                cursor: scheduled ? 'default' : 'pointer',
+                display: 'inline-flex', alignItems: 'center', gap: 4,
+                transition: 'background .18s',
+              }}
+            >
+              {scheduled && <Icon name="check" size={14} stroke={2.4}/>}
+              {scheduled ? 'Agendado' : 'Notificar em 30 minutos'}
+            </button>
+            <button
+              onClick={onDismiss}
+              style={{
+                fontFamily: 'inherit',
+                padding: '8px 14px', borderRadius: 99,
+                background: 'transparent', color: T.text,
+                fontSize: 12.5, fontWeight: 500,
+                border: '1px solid ' + T.line2, cursor: 'pointer',
+              }}
+            >Fechar</button>
           </div>
         </div>
       </div>
