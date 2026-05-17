@@ -7,6 +7,7 @@ import { TargetScreen } from './TargetScreen.jsx';
 import { AlertSettingsScreen } from './AlertSettingsScreen.jsx';
 import { HistoryScreen } from './HistoryScreen.jsx';
 import { ShareScreen } from './ShareScreen.jsx';
+import { AboutScreen } from './AboutScreen.jsx';
 
 const ITEMS = [
   { id: 'sensor',  icon: 'sensor', label: 'Sensor',        value: '10 dias restantes' },
@@ -14,6 +15,7 @@ const ITEMS = [
   { id: 'alerts',  icon: 'bell',   label: 'Alertas',       value: '5 ativos' },
   { id: 'history', icon: 'clock',  label: 'Histórico',     value: 'Ver tudo' },
   { id: 'share',   icon: 'shield', label: 'Compartilhar',  value: 'Família e médico' },
+  { id: 'about',   icon: 'info',   label: 'Sobre',         value: 'Modelos de IA' },
 ];
 
 export function MoreScreen() {
@@ -26,6 +28,7 @@ export function MoreScreen() {
   if (subview === 'alerts')  return <AlertSettingsScreen onClose={close} onSave={() => {}}/>;
   if (subview === 'history') return <HistoryScreen onClose={close}/>;
   if (subview === 'share')   return <ShareScreen onClose={close}/>;
+  if (subview === 'about')   return <AboutScreen onClose={close}/>;
 
   return (
     <div style={{ padding: '8px 20px 24px', color: T.textHi }}>
