@@ -46,18 +46,19 @@ export function AboutScreen({ onClose }) {
         <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, marginTop: 10, zIndex: 1, position: 'relative' }}>
           A Bee combina modelos de regressão treinados em séries temporais de
           CGM, insulina e refeições. A cada minuto eles projetam a glicose em
-          diferentes horizontes — curto prazo para evitar hipoglicemia, longo
-          para antecipar tendências — e disparam alertas quando o risco é alto.
+          diferentes horizontes, do curto prazo (para evitar hipoglicemia) ao
+          longo (para antecipar tendências), e disparam alertas quando o risco
+          é alto.
         </div>
       </div>
 
       <Section label="Desempenho clínico" hint="Acurácia em A+B">
         <Card>
-          <MetricRow tone="ok"     value=">92%" label="Cenário global"          hint="Horizonte de 105 min · todas as faixas"/>
+          <MetricRow tone="ok"     value="≈92%" label="Cenário global"          hint="Horizonte de 105 min · todas as faixas"/>
           <Divider/>
           <MetricRow tone="accent" value="≈96%" label="Hipoglicemia"            hint="Horizonte de 30 min · risco imediato"/>
           <Divider/>
-          <MetricRow tone="warn"   value="91%"  label="Hipoglicemia noturna"    hint="Horizonte de 5 h · sono"/>
+          <MetricRow tone="warn"   value="≈91%" label="Hipoglicemia noturna"    hint="Horizonte de 5 h · sono"/>
         </Card>
       </Section>
 
@@ -79,27 +80,32 @@ export function AboutScreen({ onClose }) {
         </FootnoteCard>
       </Section>
 
-      <Section label="Como ler A e B">
+      <Section label="Como interpretar as zonas A e B" hint="Clarke Error Grid">
         <Card>
+          <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, paddingBottom: 6 }}>
+            O Clarke Error Grid avalia se o erro de uma predição de glicose teria impacto clínico na tomada de decisão.
+          </div>
+          <Divider/>
           <ZoneBlock
             tone="ok"
             letter="A"
-            title="Clinicamente exata"
-            text="Predição dentro de ±20% do valor real (ou ambos abaixo de 70 mg/dL). A decisão tomada com base nela é a mesma que seria tomada com a medida verdadeira."
+            title="Predições clinicamente corretas"
+            text="Inclui predições muito próximas do valor real: geralmente dentro de ±20% da glicose medida, ou quando tanto o valor real quanto o previsto indicam hipoglicemia abaixo de 70 mg/dL. Na prática, uma predição nessa zona levaria à mesma decisão clínica que seria tomada usando o valor real."
           />
           <Divider/>
           <ZoneBlock
             tone="accent"
             letter="B"
-            title="Desvio benigno"
-            text="Fora dos ±20%, porém o erro não muda a conduta clínica — a decisão continua segura para o paciente."
+            title="Erros clinicamente aceitáveis"
+            text="Inclui predições que não estão dentro da margem de ±20%, mas cujo erro não levaria a uma decisão perigosa ou inadequada. Ou seja, apesar da diferença numérica, a conduta clínica provavelmente continuaria segura para o paciente."
           />
           <Divider/>
-          <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.5, paddingTop: 4 }}>
-            <strong style={{ color: T.textHi }}>A soma A + B</strong> mede a fração
-            de predições que <em>não</em> levariam a um tratamento errado. É a
-            métrica padrão para validar modelos preditivos de glicose. Zonas C,
-            D e E representam erros progressivamente mais perigosos.
+          <div style={{ fontSize: 12.5, color: T.text, lineHeight: 1.55, paddingTop: 4 }}>
+            Assim, a soma <strong style={{ color: T.textHi }}>A + B</strong> representa
+            a proporção de predições consideradas clinicamente seguras ou aceitáveis.
+            Por isso, ela é frequentemente usada para avaliar modelos de predição de
+            glicose. Já as zonas C, D e E indicam erros com maior potencial de levar a
+            decisões clínicas incorretas, sendo progressivamente mais preocupantes.
           </div>
         </Card>
       </Section>
