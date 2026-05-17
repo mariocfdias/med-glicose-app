@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { useTheme } from '../theme/ThemeProvider.jsx';
 import { Icon } from '../icons/Icon.jsx';
 import { STATES, generateCurve } from '../data/states.js';
@@ -6,7 +6,6 @@ import { Bee } from '../components/Bee.jsx';
 import { GlucoseChart } from '../components/GlucoseChart.jsx';
 import { RiskBanner } from '../components/RiskBanner.jsx';
 import { InsightCard } from '../components/InsightCard.jsx';
-import { StatCard } from '../components/StatCard.jsx';
 import { LogTile } from '../components/LogTile.jsx';
 
 export function HomeScreen({ stateKey, setStateKey, onRegister }) {
@@ -16,6 +15,8 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
   const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : T.danger;
   const stateOrder = ['normal', 'rising', 'high', 'lowSoon', 'low'];
   const [showInsight, setShowInsight] = useState(true);
+  const chartCardRef = useRef(null);
+  const scrollToChart = () => chartCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   return (
     <div style={{ padding: '8px 20px 24px', color: T.textHi, fontFamily: 'inherit' }}>
@@ -35,10 +36,11 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
         </button>
       </div>
 
-      <div style={{
+      <div ref={chartCardRef} style={{
         background: T.bg2, borderRadius: 24, padding: '22px 20px',
         border: '1px solid ' + T.line,
-        position: 'relative', overflow: 'hidden'
+        position: 'relative', overflow: 'hidden',
+        scrollMarginTop: 12,
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
@@ -88,7 +90,7 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
         </div>
       </div>
 
-      {s.risk && <RiskBanner risk={s.risk} stateKey={stateKey}/>}
+      {s.risk && <RiskBanner risk={s.risk} stateKey={stateKey} onSeeDetails={scrollToChart}/>}
 
       {showInsight && stateKey === 'normal' && (
         <InsightCard
@@ -107,12 +109,6 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
           body="Sua glicose costuma subir cerca de 30 min após o almoço."
         />
       )}
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10, marginTop: 16 }}>
-        <StatCard label="No alvo" value={s.timeInRange + '%'} sub="hoje" tone={s.timeInRange >= 70 ? 'ok' : s.timeInRange >= 50 ? 'warn' : 'danger'}/>
-        <StatCard label="Média 7d" value={s.avg7} sub="mg/dL"/>
-        <StatCard label="Vs. ontem" value={(s.yesterdayDelta >= 0 ? '+' : '') + s.yesterdayDelta} sub="mg/dL" tone={Math.abs(s.yesterdayDelta) > 15 ? 'warn' : 'ok'}/>
-      </div>
 
       <div style={{ marginTop: 24, marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
         <div style={{ fontSize: 13, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>Registrar</div>

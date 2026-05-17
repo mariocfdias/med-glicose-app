@@ -9,6 +9,7 @@ import { RegisterMenu } from './screens/RegisterMenu.jsx';
 import { MealScreen } from './screens/MealScreen.jsx';
 import { InsulinScreen } from './screens/InsulinScreen.jsx';
 import { ActivityScreen } from './screens/ActivityScreen.jsx';
+import { CommentScreen } from './screens/CommentScreen.jsx';
 import { BottomNav } from './components/BottomNav.jsx';
 import { TweaksPanel } from './components/TweaksPanel.jsx';
 import { BottomSheet } from './components/BottomSheet.jsx';
@@ -108,6 +109,9 @@ function AppContent() {
               )}
               {registerSheet.type === 'activity' && (
                 <ActivityScreen onClose={closeRegister} onSave={() => {}}/>
+              )}
+              {registerSheet.type === 'comment' && (
+                <CommentScreen onClose={closeRegister} onSave={() => {}} stateKey={stateKey}/>
               )}
             </BottomSheet>
           </IOSDevice>
