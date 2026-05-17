@@ -6,20 +6,20 @@ import { Section, Card, Divider, FootnoteCard } from '../components/FormLayout.j
 import { Icon } from '../icons/Icon.jsx';
 
 export function AboutScreen({ onClose }) {
-  const { T, mode } = useTheme();
+  const { T } = useTheme();
   const chartRef = useRef(null);
 
   useEffect(() => {
     if (!chartRef.current) return;
     const inst = echarts.init(chartRef.current);
-    inst.setOption(buildClarkeOption(T));
+    inst.setOption(buildClarkeOption());
     const onResize = () => inst.resize();
     window.addEventListener('resize', onResize);
     return () => {
       window.removeEventListener('resize', onResize);
       inst.dispose();
     };
-  }, [T, mode]);
+  }, []);
 
   return (
     <div style={{ padding: '8px 20px 24px', color: T.textHi }}>
@@ -63,14 +63,17 @@ export function AboutScreen({ onClose }) {
       </Section>
 
       <Section label="Clarke Error Grid" hint="Predição vs. referência">
-        <Card padded={false} style={{ padding: 14 }}>
-          <div ref={chartRef} style={{ width: '100%', height: 300 }}/>
-          <div style={{ display: 'flex', gap: 14, marginTop: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <LegendDot color={T.ok}     label="A"/>
-            <LegendDot color={T.accent} label="B"/>
-            <LegendDot color={T.warn}   label="C"/>
-            <LegendDot color={T.danger} label="D / E"/>
-            <LegendDot color={T.brand}  label="Predições" symbol="dot"/>
+        <Card padded={false} style={{ padding: 0, overflow: 'hidden' }}>
+          <div style={{ background: CHART_PALETTE.bg, padding: 14 }}>
+            <div ref={chartRef} style={{ width: '100%', height: 300 }}/>
+            <div style={{ display: 'flex', gap: 14, marginTop: 8, flexWrap: 'wrap', justifyContent: 'center' }}>
+              <LegendDot color={CHART_PALETTE.zoneA} label="A" textColor={CHART_PALETTE.text}/>
+              <LegendDot color={CHART_PALETTE.zoneB} label="B" textColor={CHART_PALETTE.text}/>
+              <LegendDot color={CHART_PALETTE.zoneC} label="C" textColor={CHART_PALETTE.text}/>
+              <LegendDot color={CHART_PALETTE.zoneD} label="D" textColor={CHART_PALETTE.text}/>
+              <LegendDot color={CHART_PALETTE.zoneE} label="E" textColor={CHART_PALETTE.text}/>
+              <LegendDot color={CHART_PALETTE.point} label="Predições" symbol="dot" textColor={CHART_PALETTE.text}/>
+            </div>
           </div>
         </Card>
 
@@ -138,7 +141,7 @@ function MetricRow({ value, label, hint, tone = 'ok' }) {
   );
 }
 
-function LegendDot({ color, label, symbol = 'square' }) {
+function LegendDot({ color, label, symbol = 'square', textColor }) {
   const { T } = useTheme();
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -150,7 +153,7 @@ function LegendDot({ color, label, symbol = 'square' }) {
         opacity: symbol === 'dot' ? 1 : 0.55,
         border: symbol === 'dot' ? 'none' : '1px solid ' + color,
       }}/>
-      <div style={{ fontSize: 11.5, color: T.text }}>{label}</div>
+      <div style={{ fontSize: 11.5, color: textColor || T.text }}>{label}</div>
     </div>
   );
 }
@@ -175,6 +178,23 @@ function ZoneBlock({ letter, title, text, tone }) {
   );
 }
 
+// Paleta fixa do gráfico: sempre clara, independente do tema do app.
+// O Clarke Error Grid precisa de cores nítidas e estáveis para ser legível.
+const CHART_PALETTE = {
+  bg: '#FAFBFD',
+  textHi: '#0B1020',
+  text: '#3A4159',
+  textMute: '#6B7490',
+  line: 'rgba(11,16,32,0.10)',
+  line2: 'rgba(11,16,32,0.18)',
+  zoneA: '#1FAE6E', // verde
+  zoneB: '#2E7BD6', // azul
+  zoneC: '#E0890D', // âmbar
+  zoneD: '#E1394A', // vermelho
+  zoneE: '#8B5CF6', // roxo
+  point: '#0B6B33', // verde-escuro (brand) para contraste sobre o fundo claro
+};
+
 function clarkeZone(ref, pred) {
   if ((ref < 70 && pred < 70) || Math.abs(pred - ref) <= 0.2 * ref) return 'A';
   if (ref <= 70 && pred >= 180) return 'E';
@@ -186,18 +206,19 @@ function clarkeZone(ref, pred) {
   return 'B';
 }
 
-function buildClarkeOption(T) {
+function buildClarkeOption() {
+  const C = CHART_PALETTE;
   const MAX = 400;
   const STEP = 4;
 
   const zoneFill = {
-    A: T.ok,
-    B: T.accent,
-    C: T.warn,
-    D: T.danger,
-    E: T.danger,
+    A: C.zoneA,
+    B: C.zoneB,
+    C: C.zoneC,
+    D: C.zoneD,
+    E: C.zoneE,
   };
-  const zoneOpacity = { A: 0.28, B: 0.20, C: 0.22, D: 0.22, E: 0.30 };
+  const zoneOpacity = { A: 0.32, B: 0.22, C: 0.26, D: 0.30, E: 0.28 };
 
   // Classifica células varrendo a malha [0..400] x [0..400].
   // Agrupa células contíguas de mesma zona em retângulos por linha
@@ -262,10 +283,10 @@ function buildClarkeOption(T) {
     label: {
       show: true,
       formatter: (p) => zoneLabels[p.dataIndex].text,
-      color: T.textHi,
+      color: C.textHi,
       fontSize: 11,
       fontWeight: 700,
-      opacity: 0.75,
+      opacity: 0.85,
     },
     z: 5,
   };
@@ -275,7 +296,7 @@ function buildClarkeOption(T) {
     silent: true,
     showSymbol: false,
     data: [[0,0],[MAX,MAX]],
-    lineStyle: { color: T.textMute, type: 'dashed', width: 1, opacity: 0.7 },
+    lineStyle: { color: C.textMute, type: 'dashed', width: 1, opacity: 0.7 },
     z: 4,
   };
 
@@ -284,7 +305,7 @@ function buildClarkeOption(T) {
     silent: true,
     showSymbol: false,
     data: [[0,0],[MAX, MAX * 0.8]],
-    lineStyle: { color: T.textMute, type: 'dotted', width: 1, opacity: 0.35 },
+    lineStyle: { color: C.textMute, type: 'dotted', width: 1, opacity: 0.4 },
     z: 3,
   };
   const upperBound = {
@@ -292,7 +313,7 @@ function buildClarkeOption(T) {
     silent: true,
     showSymbol: false,
     data: [[0,0],[MAX / 1.2, MAX]],
-    lineStyle: { color: T.textMute, type: 'dotted', width: 1, opacity: 0.35 },
+    lineStyle: { color: C.textMute, type: 'dotted', width: 1, opacity: 0.4 },
     z: 3,
   };
 
@@ -312,39 +333,39 @@ function buildClarkeOption(T) {
     type: 'scatter',
     symbolSize: 5,
     data: points,
-    itemStyle: { color: T.brand, opacity: 0.85, borderColor: T.brand, borderWidth: 0 },
+    itemStyle: { color: C.point, opacity: 0.95, borderColor: '#FFFFFF', borderWidth: 0.5 },
     z: 6,
   };
 
   return {
     animation: false,
-    backgroundColor: 'transparent',
+    backgroundColor: C.bg,
     grid: { left: 44, right: 12, top: 14, bottom: 36 },
     xAxis: {
       type: 'value', min: 0, max: MAX, interval: 100,
       name: 'Referência (mg/dL)',
       nameLocation: 'middle', nameGap: 22,
-      nameTextStyle: { color: T.textMute, fontSize: 10 },
-      axisLine: { lineStyle: { color: T.line2 } },
-      axisTick: { lineStyle: { color: T.line2 } },
-      axisLabel: { color: T.textMute, fontSize: 10 },
-      splitLine: { lineStyle: { color: T.line, type: 'dashed' } },
+      nameTextStyle: { color: C.textMute, fontSize: 10 },
+      axisLine: { lineStyle: { color: C.line2 } },
+      axisTick: { lineStyle: { color: C.line2 } },
+      axisLabel: { color: C.textMute, fontSize: 10 },
+      splitLine: { lineStyle: { color: C.line, type: 'dashed' } },
     },
     yAxis: {
       type: 'value', min: 0, max: MAX, interval: 100,
       name: 'Predição',
       nameLocation: 'middle', nameGap: 32,
-      nameTextStyle: { color: T.textMute, fontSize: 10 },
-      axisLine: { lineStyle: { color: T.line2 } },
-      axisTick: { lineStyle: { color: T.line2 } },
-      axisLabel: { color: T.textMute, fontSize: 10 },
-      splitLine: { lineStyle: { color: T.line, type: 'dashed' } },
+      nameTextStyle: { color: C.textMute, fontSize: 10 },
+      axisLine: { lineStyle: { color: C.line2 } },
+      axisTick: { lineStyle: { color: C.line2 } },
+      axisLabel: { color: C.textMute, fontSize: 10 },
+      splitLine: { lineStyle: { color: C.line, type: 'dashed' } },
     },
     tooltip: {
       trigger: 'item',
-      backgroundColor: T.bg2,
-      borderColor: T.line2,
-      textStyle: { color: T.textHi, fontSize: 11 },
+      backgroundColor: '#FFFFFF',
+      borderColor: C.line2,
+      textStyle: { color: C.textHi, fontSize: 11 },
       formatter: (p) => p.seriesType === 'scatter' && p.data && p.data.length === 2
         ? `Ref ${p.data[0]} → Pred ${p.data[1]} mg/dL` : '',
     },
