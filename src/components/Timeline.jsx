@@ -13,7 +13,7 @@ export function Timeline({ steps = [] }) {
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
               <div style={{
                 width: CIRCLE, height: CIRCLE, borderRadius: 99,
-                background: T.brand, color: '#E8F5EE',
+                background: T.brand, color: T.brandText,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 13, fontWeight: 700, flexShrink: 0,
               }}>{step.number ?? i + 1}</div>

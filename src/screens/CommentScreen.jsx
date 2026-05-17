@@ -41,7 +41,7 @@ export function CommentScreen({ onClose, onSave, stateKey = 'normal' }) {
               style={{
                 width: '100%', boxSizing: 'border-box',
                 background: T.bg3, color: T.textHi,
-                border: '1px solid ' + T.line, borderRadius: 14,
+                border: '1px solid ' + T.line, borderRadius: 16,
                 padding: 12, resize: 'none',
                 fontFamily: 'inherit', fontSize: 14, lineHeight: 1.45,
                 outline: 'none',

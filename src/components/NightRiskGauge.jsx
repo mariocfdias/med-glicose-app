@@ -1,8 +1,8 @@
 import { useTheme } from '../theme/ThemeProvider.jsx';
 
 export function NightRiskGauge({ value, onClick }) {
-  const { T, mode } = useTheme();
-  const indicatorStroke = mode === 'dark' ? '#FFFFFF' : '#3A4159';
+  const { T } = useTheme();
+  const indicatorStroke = T.indicatorStroke;
   const R = 70, cx = 100, cy = 104;
   const angle = value * Math.PI;
   const ix = cx + R * Math.cos(angle);
@@ -27,10 +27,10 @@ export function NightRiskGauge({ value, onClick }) {
       <svg width="100%" viewBox="0 0 200 174" style={{ display: 'block', overflow: 'visible' }}>
         <defs>
           <linearGradient id="nightGaugeGrad" x1={cx - R} y1={cy} x2={cx + R} y2={cy} gradientUnits="userSpaceOnUse">
-            <stop offset="0%"   stopColor="#ef4444"/>
-            <stop offset="32%"  stopColor="#f97316"/>
-            <stop offset="62%"  stopColor="#eab308"/>
-            <stop offset="100%" stopColor="#22c55e"/>
+            <stop offset="0%"   stopColor={T.danger}/>
+            <stop offset="38%"  stopColor={T.warn}/>
+            <stop offset="68%"  stopColor={T.warn}/>
+            <stop offset="100%" stopColor={T.ok}/>
           </linearGradient>
         </defs>
         <path d={`M ${cx - R} ${cy} A ${R} ${R} 0 0 1 ${cx + R} ${cy}`}

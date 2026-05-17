@@ -1,6 +1,8 @@
 import beeSprite from '/bee-sprite.png';
+import { useTheme } from '../theme/ThemeProvider.jsx';
 
 export function Bee({ mood = 'happy', frame = 116 }) {
+  const { T } = useTheme();
   const POS  = { happy: [0, 0], rising: [2, 0], angry: [3, 0], lowsoon: [1, 0], sad: [4, 0] };
   const FINE = { happy: [0, 0], rising: [0, 0], angry: [0, 0], lowsoon: [-15, 0], sad: [0, 0] };
   const [col, row] = POS[mood] || POS.happy;
@@ -16,11 +18,11 @@ export function Bee({ mood = 'happy', frame = 116 }) {
     <div style={{
       width: frame, height: frame, flexShrink: 0,
       borderRadius: 20,
-      background: 'linear-gradient(160deg, rgba(91,168,255,0.10), rgba(0,137,61,0.06))',
-      border: '1px solid rgba(255,255,255,0.06)',
+      background: `linear-gradient(160deg, ${T.accentSoft}, ${T.brandSoft})`,
+      border: '1px solid ' + T.line,
       overflow: 'hidden',
       position: 'relative',
-      boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.2), 0 8px 20px rgba(0,0,0,0.35)',
+      boxShadow: T.shadowInset + ', ' + T.shadowMd,
     }}>
       <div style={{
         position: 'absolute', inset: 0,
@@ -28,7 +30,6 @@ export function Bee({ mood = 'happy', frame = 116 }) {
         backgroundSize: `${bgW}px ${bgH}px`,
         backgroundPosition: `${bgX}px ${bgY}px`,
         backgroundRepeat: 'no-repeat',
-        filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.4))',
       }}/>
     </div>
   );

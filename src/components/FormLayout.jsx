@@ -56,7 +56,7 @@ export function Switch({ checked, onChange, label }) {
       aria-label={label}
       style={{
         width: 44, height: 26, borderRadius: 99,
-        background: checked ? T.brand : 'rgba(120,120,128,0.32)',
+        background: checked ? T.brand : T.switchOff,
         border: 'none', cursor: 'pointer',
         position: 'relative', flexShrink: 0,
         transition: 'background .22s',
@@ -65,8 +65,8 @@ export function Switch({ checked, onChange, label }) {
     >
       <div style={{
         position: 'absolute', top: 2, left: checked ? 20 : 2,
-        width: 22, height: 22, borderRadius: 99, background: '#fff',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.1)',
+        width: 22, height: 22, borderRadius: 99, background: T.switchThumb,
+        boxShadow: T.shadowSm,
         transition: 'left .22s cubic-bezier(.32,.72,.24,1)',
       }}/>
     </button>

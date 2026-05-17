@@ -39,7 +39,7 @@ export function SensorScreen({ onClose }) {
   if (view === 'exchange') return <SensorExchangeView onBack={() => setView('info')} />;
   if (view === 'history')  return <SensorHistoryView  onBack={() => setView('info')} />;
 
-  const indicatorStroke = mode === 'dark' ? '#FFFFFF' : '#3A4159';
+  const indicatorStroke = T.indicatorStroke;
   const progress = REMAINING / TOTAL_DAYS;
   const R = 76, cx = 110, cy = 110;
   const circumference = 2 * Math.PI * R;
@@ -150,7 +150,7 @@ export function SensorScreen({ onClose }) {
         style={{
           marginTop: 22, width: '100%',
           padding: '14px 16px', borderRadius: 14,
-          background: T.brand, color: '#E8F5EE',
+          background: T.brand, color: T.brandText,
           border: 'none', fontFamily: 'inherit', fontSize: 15, fontWeight: 600,
           cursor: 'pointer',
           boxShadow: '0 10px 24px ' + T.brand + '55',
@@ -164,7 +164,7 @@ function SensorExchangeView({ onBack }) {
   const { T } = useTheme();
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, color: T.textHi }}>
-      <div style={{ padding: '8px 12px 0', marginLeft: -4, marginRight: -4 }}>
+      <div style={{ padding: '8px 20px 0', marginLeft: -8, marginRight: -8 }}>
         <ScreenHeader title="Trocar sensor" onBack={onBack} actionLabel="" actionDisabled/>
       </div>
       <div className="sg-scroll" style={{ flex: 1, overflowY: 'auto', padding: '14px 20px 28px' }}>
@@ -186,7 +186,7 @@ function SensorHistoryView({ onBack }) {
   const { T } = useTheme();
   return (
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, color: T.textHi }}>
-      <div style={{ padding: '8px 12px 0', marginLeft: -4, marginRight: -4 }}>
+      <div style={{ padding: '8px 20px 0', marginLeft: -8, marginRight: -8 }}>
         <ScreenHeader title="Histórico de sensores" onBack={onBack} actionLabel="" actionDisabled/>
       </div>
       <div className="sg-scroll" style={{ flex: 1, overflowY: 'auto', padding: '14px 20px 28px' }}>

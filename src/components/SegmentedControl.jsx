@@ -1,7 +1,7 @@
 import { useTheme } from '../theme/ThemeProvider.jsx';
 
 export function SegmentedControl({ options, value, onChange }) {
-  const { T, mode } = useTheme();
+  const { T } = useTheme();
   const idx = Math.max(0, options.findIndex(o => o.value === value));
   const segPct = 100 / options.length;
 
@@ -22,11 +22,9 @@ export function SegmentedControl({ options, value, onChange }) {
         left: `calc(${idx * segPct}% + 3px)`,
         width: `calc(${segPct}% - 6px)`,
         borderRadius: 9,
-        background: mode === 'dark' ? 'rgba(255,255,255,0.08)' : '#FFFFFF',
-        border: '1px solid ' + (mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(11,16,32,0.06)'),
-        boxShadow: mode === 'dark'
-          ? '0 1px 2px rgba(0,0,0,0.4)'
-          : '0 1px 3px rgba(11,16,32,0.10), 0 1px 1px rgba(11,16,32,0.04)',
+        background: T.segActive,
+        border: '1px solid ' + T.segActiveBorder,
+        boxShadow: T.shadowSm,
         transition: 'left .26s cubic-bezier(.32,.72,.24,1)',
         zIndex: 0,
       }}/>

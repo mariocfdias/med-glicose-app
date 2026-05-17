@@ -28,7 +28,7 @@ export function BottomSheet({ open, onClose, heightPercent = 92, children }) {
 
   return (
     <div style={{
-      position: 'absolute', inset: 0, zIndex: 80,
+      position: 'absolute', inset: 0, zIndex: 60,
       pointerEvents: visible ? 'auto' : 'none',
     }}>
       <div

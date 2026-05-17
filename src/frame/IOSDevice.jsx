@@ -12,9 +12,10 @@ export function IOSDevice({ children, width = 402, height = 874, dark = false, t
     }}>
       <div style={{
         position: 'absolute', top: 11, left: '50%', transform: 'translateX(-50%)',
-        width: 126, height: 37, borderRadius: 24, background: '#000', zIndex: 50,
+        width: 126, height: 37, borderRadius: 24, background: '#000', zIndex: 110,
+        pointerEvents: 'none',
       }} />
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 100, pointerEvents: 'none' }}>
         <IOSStatusBar dark={dark} />
       </div>
       <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -22,7 +23,7 @@ export function IOSDevice({ children, width = 402, height = 874, dark = false, t
         <div style={{ flex: 1, overflow: 'auto' }}>{children}</div>
       </div>
       <div style={{
-        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 60,
+        position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 110,
         height: 34, display: 'flex', justifyContent: 'center', alignItems: 'flex-end',
         paddingBottom: 8, pointerEvents: 'none',
       }}>

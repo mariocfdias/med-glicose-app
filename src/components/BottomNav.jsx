@@ -13,6 +13,8 @@ export function BottomNav({ tab, setTab, onPrimaryAction }) {
   return (
     <div style={{
       flexShrink: 0,
+      position: 'relative',
+      zIndex: 30,
       padding: '10px 14px 34px',
       background: T.bg,
       borderTop: '1px solid ' + T.line,
@@ -25,12 +27,14 @@ export function BottomNav({ tab, setTab, onPrimaryAction }) {
             background: 'transparent', border: 'none', cursor: 'pointer',
             display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4,
             color: tab === it.id ? T.brand : T.textMute,
-            fontFamily: 'inherit', padding: '6px 8px'
+            fontFamily: 'inherit', padding: '6px 8px',
+            position: 'relative',
+            zIndex: it.primary ? 2 : 1,
           }}>
           {it.primary ? (
             <div style={{
               width: 64, height: 64, borderRadius: 99, background: T.brand,
-              color: '#E8F5EE', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: T.brandText, display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0 10px 30px ' + T.brand + '88', marginTop: -26
             }}>
               <Icon name="plus" size={32} stroke={2.2}/>

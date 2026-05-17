@@ -40,8 +40,8 @@ export function ShareScreen({ onClose }) {
       }}>
         <div style={{
           width: 42, height: 42, borderRadius: 14,
-          background: 'linear-gradient(135deg, ' + T.brand + ', #00B850)',
-          color: '#E8F5EE',
+          background: 'linear-gradient(135deg, ' + T.brand + ', ' + T.brandAlt + ')',
+          color: T.brandText,
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           boxShadow: '0 6px 16px ' + T.brand + '40',
         }}>

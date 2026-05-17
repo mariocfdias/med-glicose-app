@@ -151,7 +151,7 @@ function FilterPill({ iconName, label, active, onClick }) {
       padding: iconName ? '7px 13px 7px 10px' : '7px 13px',
       borderRadius: 99,
       background: active ? T.brand : T.bg3,
-      color: active ? '#E8F5EE' : T.text,
+      color: active ? T.brandText : T.text,
       border: '1px solid ' + (active ? 'transparent' : T.line),
       fontFamily: 'inherit', fontSize: 12.5, fontWeight: 500,
       cursor: 'pointer', flexShrink: 0,

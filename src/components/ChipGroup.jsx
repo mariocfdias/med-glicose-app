@@ -13,7 +13,7 @@ export function ChipGroup({ options, value, onChange }) {
             padding: opt.icon ? '8px 14px 8px 11px' : '9px 16px',
             borderRadius: 99,
             background: selected ? T.brand : T.bg3,
-            color: selected ? '#E8F5EE' : T.text,
+            color: selected ? T.brandText : T.text,
             border: '1px solid ' + (selected ? 'transparent' : T.line),
             fontFamily: 'inherit', fontSize: 13, fontWeight: 500,
             cursor: 'pointer',
