@@ -29,11 +29,11 @@ export function BottomNav({ tab, setTab, onPrimaryAction }) {
           }}>
           {it.primary ? (
             <div style={{
-              width: 50, height: 50, borderRadius: 99, background: T.brand,
+              width: 64, height: 64, borderRadius: 99, background: T.brand,
               color: '#E8F5EE', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 10px 30px ' + T.brand + '88', marginTop: -18
+              boxShadow: '0 10px 30px ' + T.brand + '88', marginTop: -26
             }}>
-              <Icon name="plus" size={26} stroke={2.2}/>
+              <Icon name="plus" size={32} stroke={2.2}/>
             </div>
           ) : (
             <Icon name={it.icon} size={22} stroke={tab === it.id ? 2.2 : 1.7}/>

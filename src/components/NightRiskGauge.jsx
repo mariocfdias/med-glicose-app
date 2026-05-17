@@ -1,6 +1,6 @@
 import { useTheme } from '../theme/ThemeProvider.jsx';
 
-export function NightRiskGauge({ value }) {
+export function NightRiskGauge({ value, onClick }) {
   const { T, mode } = useTheme();
   const indicatorStroke = mode === 'dark' ? '#FFFFFF' : '#3A4159';
   const R = 70, cx = 100, cy = 104;
@@ -10,9 +10,19 @@ export function NightRiskGauge({ value }) {
   const label = value < 0.35 ? 'Baixo' : value < 0.65 ? 'Moderado' : 'Alto';
   const c = value < 0.35 ? T.ok : value < 0.65 ? T.warn : T.danger;
   return (
-    <div style={{ background: T.bg2, border: '1px solid ' + T.line, borderRadius: 20, padding: '16px 16px 12px', marginTop: 14 }}>
-      <div style={{ fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase', marginBottom: 4 }}>
-        Risco noturno de variação baixa
+    <div
+      onClick={onClick}
+      style={{
+        background: T.bg2, border: '1px solid ' + T.line, borderRadius: 20,
+        padding: '16px 16px 12px', marginTop: 14,
+        cursor: onClick ? 'pointer' : 'default',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+        <div style={{ fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>
+          Risco noturno de variação baixa
+        </div>
+        {onClick && <div style={{ fontSize: 11, color: T.accent }}>Detalhes →</div>}
       </div>
       <svg width="100%" viewBox="0 0 200 174" style={{ display: 'block', overflow: 'visible' }}>
         <defs>

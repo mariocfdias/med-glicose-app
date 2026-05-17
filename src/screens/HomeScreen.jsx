@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTheme } from '../theme/ThemeProvider.jsx';
 import { Icon } from '../icons/Icon.jsx';
 import { STATES, generateCurve } from '../data/states.js';
@@ -15,8 +15,9 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
   const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : T.danger;
   const stateOrder = ['normal', 'rising', 'high', 'lowSoon', 'low'];
   const [showInsight, setShowInsight] = useState(true);
-  const chartCardRef = useRef(null);
-  const scrollToChart = () => chartCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const [riskDismissed, setRiskDismissed] = useState(false);
+
+  useEffect(() => { setRiskDismissed(false); }, [stateKey]);
 
   return (
     <div style={{ padding: '8px 20px 24px', color: T.textHi, fontFamily: 'inherit' }}>
@@ -36,11 +37,10 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
         </button>
       </div>
 
-      <div ref={chartCardRef} style={{
+      <div style={{
         background: T.bg2, borderRadius: 24, padding: '22px 20px',
         border: '1px solid ' + T.line,
         position: 'relative', overflow: 'hidden',
-        scrollMarginTop: 12,
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
@@ -90,7 +90,9 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
         </div>
       </div>
 
-      {s.risk && <RiskBanner risk={s.risk} stateKey={stateKey} onSeeDetails={scrollToChart}/>}
+      {s.risk && !riskDismissed && (
+        <RiskBanner risk={s.risk} stateKey={stateKey} onDismiss={() => setRiskDismissed(true)}/>
+      )}
 
       {showInsight && stateKey === 'normal' && (
         <InsightCard

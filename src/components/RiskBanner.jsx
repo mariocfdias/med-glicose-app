@@ -3,7 +3,7 @@ import { useTheme } from '../theme/ThemeProvider.jsx';
 import { Icon } from '../icons/Icon.jsx';
 import { STATES } from '../data/states.js';
 
-export function RiskBanner({ risk, stateKey, onSeeDetails }) {
+export function RiskBanner({ risk, stateKey, onDismiss }) {
   const { T } = useTheme();
   const s = STATES[stateKey];
   const isLow = risk.kind === 'low';
@@ -50,32 +50,32 @@ export function RiskBanner({ risk, stateKey, onSeeDetails }) {
           </div>
           <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
             <button
-              onClick={onSeeDetails}
-              style={{
-                fontFamily: 'inherit',
-                padding: '8px 14px', borderRadius: 99,
-                background: c, color: T.bg,
-                fontSize: 12.5, fontWeight: 600, border: 'none', cursor: 'pointer'
-              }}
-            >Ver detalhes</button>
-            <button
               onClick={handleNotify}
               disabled={scheduled}
               style={{
                 fontFamily: 'inherit',
                 padding: '8px 14px', borderRadius: 99,
-                background: 'transparent',
-                color: scheduled ? T.ok : T.text,
-                fontSize: 12.5, fontWeight: 500,
-                border: '1px solid ' + (scheduled ? T.ok + '55' : T.line2),
+                background: scheduled ? T.ok : c,
+                color: T.bg,
+                fontSize: 12.5, fontWeight: 600, border: 'none',
                 cursor: scheduled ? 'default' : 'pointer',
                 display: 'inline-flex', alignItems: 'center', gap: 4,
-                transition: 'color .18s, border-color .18s',
+                transition: 'background .18s',
               }}
             >
               {scheduled && <Icon name="check" size={14} stroke={2.4}/>}
               {scheduled ? 'Agendado' : 'Notificar em 30 minutos'}
             </button>
+            <button
+              onClick={onDismiss}
+              style={{
+                fontFamily: 'inherit',
+                padding: '8px 14px', borderRadius: 99,
+                background: 'transparent', color: T.text,
+                fontSize: 12.5, fontWeight: 500,
+                border: '1px solid ' + T.line2, cursor: 'pointer',
+              }}
+            >Fechar</button>
           </div>
         </div>
       </div>
