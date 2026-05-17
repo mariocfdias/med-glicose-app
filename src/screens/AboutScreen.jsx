@@ -175,86 +175,83 @@ function ZoneBlock({ letter, title, text, tone }) {
   );
 }
 
+function clarkeZone(ref, pred) {
+  if ((ref < 70 && pred < 70) || Math.abs(pred - ref) <= 0.2 * ref) return 'A';
+  if (ref <= 70 && pred >= 180) return 'E';
+  if (ref >= 180 && pred <= 70) return 'E';
+  if (ref >= 240 && pred >= 70 && pred <= 180) return 'D';
+  if (ref <= 70 && pred >= 70 && pred <= 180) return 'D';
+  if (ref >= 70 && ref <= 290 && pred >= ref + 110) return 'C';
+  if (ref >= 130 && ref <= 180 && pred <= (7 / 5) * ref - 182) return 'C';
+  return 'B';
+}
+
 function buildClarkeOption(T) {
   const MAX = 400;
+  const STEP = 4;
 
-  const zones = [
-    {
-      name: 'A',
-      color: T.ok,
-      polys: [
-        [[0,0],[70,0],[70,56],[290,232],[400,320],[400,400],[0,0]],
-        [[0,0],[58.33,70],[70,84],[400,400],[0,0]],
-      ],
-    },
-    {
-      name: 'B',
-      color: T.accent,
-      polys: [
-        [[70,0],[180,0],[180,70],[70,56],[70,0]],
-        [[180,0],[400,0],[400,320],[290,232],[180,70],[180,0]],
-        [[0,70],[58.33,70],[70,84],[400,400],[400,400],[0,180],[0,70]],
-        [[0,180],[400,400],[260,400],[0,180]],
-      ],
-    },
-    {
-      name: 'C',
-      color: T.warn,
-      polys: [
-        [[70,180],[70,400],[180,400],[180,70*(180/70)],[70,180]],
-      ],
-    },
-    {
-      name: 'D',
-      color: T.danger,
-      polys: [
-        [[70,0],[180,0],[180,70],[70,70],[70,0]],
-        [[180,70],[400,70],[400,180],[180,180],[180,70]],
-      ],
-    },
-    {
-      name: 'E',
-      color: T.danger,
-      polys: [
-        [[0,180],[70,180],[70,400],[0,400],[0,180]],
-        [[180,0],[400,0],[400,70],[180,70],[180,0]],
-      ],
-    },
-  ];
+  const zoneFill = {
+    A: T.ok,
+    B: T.accent,
+    C: T.warn,
+    D: T.danger,
+    E: T.danger,
+  };
+  const zoneOpacity = { A: 0.28, B: 0.20, C: 0.22, D: 0.22, E: 0.30 };
 
-  const zoneSeries = zones.map(z => ({
+  // Classifica células varrendo a malha [0..400] x [0..400].
+  // Agrupa células contíguas de mesma zona em retângulos por linha
+  // para reduzir o número de shapes desenhadas.
+  const rects = [];
+  for (let p = 0; p < MAX; p += STEP) {
+    let runStart = 0;
+    let runZone = clarkeZone(STEP / 2, p + STEP / 2);
+    for (let r = STEP; r < MAX; r += STEP) {
+      const z = clarkeZone(r + STEP / 2, p + STEP / 2);
+      if (z !== runZone) {
+        rects.push([runStart, p, r, p + STEP, runZone]);
+        runStart = r;
+        runZone = z;
+      }
+    }
+    rects.push([runStart, p, MAX, p + STEP, runZone]);
+  }
+
+  const cellSeries = {
     type: 'custom',
     silent: true,
-    z: z.name === 'A' ? 3 : z.name === 'B' ? 2 : 1,
-    data: z.polys,
+    progressive: 0,
+    animation: false,
+    data: rects,
     renderItem: (params, api) => {
-      const poly = z.polys[params.dataIndex];
-      const points = poly.map(p => api.coord(p));
+      const d = rects[params.dataIndex];
+      const tl = api.coord([d[0], d[3]]);
+      const br = api.coord([d[2], d[1]]);
+      const w = br[0] - tl[0];
+      const h = br[1] - tl[1];
+      const zone = d[4];
       return {
-        type: 'polygon',
-        shape: { points },
+        type: 'rect',
+        shape: { x: tl[0] - 0.5, y: tl[1] - 0.5, width: w + 1, height: h + 1 },
         style: {
-          fill: z.color,
-          opacity: z.name === 'A' ? 0.22 : z.name === 'B' ? 0.18 : 0.14,
-          stroke: z.color,
-          lineWidth: 0.5,
-          strokeOpacity: 0.3,
+          fill: zoneFill[zone],
+          opacity: zoneOpacity[zone],
         },
       };
     },
-  }));
+    z: 1,
+  };
 
   const zoneLabels = [
-    { coord: [35, 35],   text: 'A', color: T.ok },
-    { coord: [200, 260], text: 'A', color: T.ok },
-    { coord: [130, 30],  text: 'B', color: T.accent },
-    { coord: [330, 270], text: 'B', color: T.accent },
-    { coord: [50, 250],  text: 'B', color: T.accent },
-    { coord: [125, 320], text: 'C', color: T.warn },
-    { coord: [125, 130], text: 'D', color: T.danger },
-    { coord: [340, 130], text: 'D', color: T.danger },
-    { coord: [30, 360],  text: 'E', color: T.danger },
-    { coord: [330, 30],  text: 'E', color: T.danger },
+    { coord: [55, 55],   text: 'A' },
+    { coord: [250, 250], text: 'A' },
+    { coord: [355, 240], text: 'B' },
+    { coord: [220, 305], text: 'B' },
+    { coord: [140, 335], text: 'C' },
+    { coord: [40, 125],  text: 'D' },
+    { coord: [320, 125], text: 'D' },
+    { coord: [35, 320],  text: 'E' },
+    { coord: [330, 35],  text: 'E' },
   ];
 
   const labelSeries = {
@@ -268,7 +265,7 @@ function buildClarkeOption(T) {
       color: T.textHi,
       fontSize: 11,
       fontWeight: 700,
-      opacity: 0.6,
+      opacity: 0.75,
     },
     z: 5,
   };
@@ -280,6 +277,23 @@ function buildClarkeOption(T) {
     data: [[0,0],[MAX,MAX]],
     lineStyle: { color: T.textMute, type: 'dashed', width: 1, opacity: 0.7 },
     z: 4,
+  };
+
+  const lowerBound = {
+    type: 'line',
+    silent: true,
+    showSymbol: false,
+    data: [[0,0],[MAX, MAX * 0.8]],
+    lineStyle: { color: T.textMute, type: 'dotted', width: 1, opacity: 0.35 },
+    z: 3,
+  };
+  const upperBound = {
+    type: 'line',
+    silent: true,
+    showSymbol: false,
+    data: [[0,0],[MAX / 1.2, MAX]],
+    lineStyle: { color: T.textMute, type: 'dotted', width: 1, opacity: 0.35 },
+    z: 3,
   };
 
   const points = [];
@@ -334,6 +348,6 @@ function buildClarkeOption(T) {
       formatter: (p) => p.seriesType === 'scatter' && p.data && p.data.length === 2
         ? `Ref ${p.data[0]} → Pred ${p.data[1]} mg/dL` : '',
     },
-    series: [...zoneSeries, diagonal, labelSeries, scatter],
+    series: [cellSeries, lowerBound, upperBound, diagonal, labelSeries, scatter],
   };
 }
