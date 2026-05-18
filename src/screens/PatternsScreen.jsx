@@ -7,7 +7,7 @@ import { PatternRow } from '../components/PatternRow.jsx';
 import { StatCard } from '../components/StatCard.jsx';
 
 export function PatternsScreen({ stateKey, onOpenPattern }) {
-  const { T } = useTheme();
+  const { T, mode } = useTheme();
   const s = STATES[stateKey];
   const data = useMemo(() => generateCurve(stateKey), [stateKey]);
   return (
@@ -44,7 +44,7 @@ export function PatternsScreen({ stateKey, onOpenPattern }) {
 
       <div style={{ marginTop: 14, fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>Padrões detectados</div>
 
-      <NightRiskGauge value={s.nightRisk} onClick={() => onOpenPattern?.('night-risk')}/>
+      {mode === 'dark' && <NightRiskGauge value={s.nightRisk} onClick={() => onOpenPattern?.('night-risk')}/>}
 
       <PatternRow icon="moon" title="Variações noturnas recorrentes" body="3 variações abaixo do alvo entre 02h e 04h nos últimos 7 dias." tone="warn" onClick={() => onOpenPattern?.('night-variation')}/>
       <PatternRow icon="food" title="Pico pós‑almoço" body="Média de +84 mg/dL 60 min após o almoço." tone="warn" onClick={() => onOpenPattern?.('lunch-spike')}/>

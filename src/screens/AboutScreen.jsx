@@ -19,8 +19,8 @@ export function AboutScreen({ onClose }) {
           fontSize: 30, fontWeight: 600, letterSpacing: -0.5,
           fontFamily: '-apple-system, "SF Pro Display", "Inter", system-ui, sans-serif',
         }}>
-          <span style={{ color: T.brand }}>Smart </span>
-          <span style={{ color: T.accent }}>Med</span>
+          <span style={{ color: T.brand }}>SmartMed</span>
+          <span style={{ color: T.textMute }}> - Medlevensohn</span>
         </div>
         <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img
@@ -37,7 +37,7 @@ export function AboutScreen({ onClose }) {
 
       <Section label="Aplicativo">
         <Card>
-          <InfoRow label="Nome" value="Smart Med"/>
+          <InfoRow label="Nome" value="SmartMed - Medlevensohn"/>
           <InfoDivider/>
           <InfoRow label="Versão do software" value="1"/>
           <InfoDivider/>
