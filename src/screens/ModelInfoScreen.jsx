@@ -116,7 +116,7 @@ export function ModelInfoScreen({ onClose }) {
       <Section label="Hipoglicemia noturna" hint="Sinal preditivo">
         <Card>
           <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, paddingBottom: 6 }}>
-            O modelo de hipoglicemia noturna estima a probabilidade de a glicose cair abaixo de 70 mg/dL durante o sono (00h–06h), combinando o histórico das últimas duas semanas com a tendência do final do dia.
+            O modelo de hipoglicemia noturna estima a probabilidade de a glicose cair abaixo de 70 mg/dL durante o sono (00h–05h), combinando o histórico das últimas duas semanas com a tendência do final do dia.
           </div>
           <Divider/>
           <div style={{ display: 'flex', gap: 8, marginTop: 8, marginBottom: 6 }}>
@@ -126,7 +126,7 @@ export function ModelInfoScreen({ onClose }) {
           </div>
           <Divider/>
           <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, paddingTop: 4 }}>
-            <strong style={{ color: T.textHi }}>Por que isso importa:</strong> hipoglicemias noturnas são frequentemente assintomáticas — o paciente não acorda para perceber. Ter a estimativa disponível às 22h permite uma ação preventiva simples, como um lanche leve, reduzindo o risco sem interromper o sono.
+            <strong style={{ color: T.textHi }}>Por que isso importa:</strong> hipoglicemias noturnas são frequentemente assintomáticas: o paciente não acorda para perceber. Ter a estimativa disponível às 22h permite uma ação preventiva simples, como um lanche leve, reduzindo o risco sem interromper o sono.
           </div>
         </Card>
 

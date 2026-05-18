@@ -56,7 +56,7 @@ function NightRiskDetail({ onClose }) {
     <DetailShell title="Risco noturno" tone="warn" onClose={onClose}>
       <div style={{ display: 'flex', gap: 10, marginTop: 6 }}>
         <StatBadge value="44%" label="Risco esta noite" tone="warn"/>
-        <StatBadge value="02h–06h" label="Janela monitorada" tone="accent"/>
+        <StatBadge value="00h–05h" label="Janela monitorada" tone="accent"/>
       </div>
 
       <Section label="O que é este indicador?">
@@ -66,7 +66,7 @@ function NightRiskDetail({ onClose }) {
           </div>
           <Divider/>
           <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55 }}>
-            <strong style={{ color: T.textHi }}>Baixo</strong> (&lt;35%) — probabilidade pequena. <strong style={{ color: T.textHi }}>Moderado</strong> (35–65%) — atenção recomendada. <strong style={{ color: T.textHi }}>Alto</strong> (&gt;65%) — risco elevado.
+            <strong style={{ color: T.textHi }}>Baixo</strong> (&lt;35%): probabilidade pequena. <strong style={{ color: T.textHi }}>Moderado</strong> (35–65%): atenção recomendada. <strong style={{ color: T.textHi }}>Alto</strong> (&gt;65%): risco elevado.
           </div>
         </Card>
       </Section>
@@ -80,7 +80,7 @@ function NightRiskDetail({ onClose }) {
       </Section>
 
       <Section label="Recomendações">
-        <BulletItem>Verifique a glicose antes de dormir — valores entre 100 e 140 mg/dL são ideais.</BulletItem>
+        <BulletItem>Verifique a glicose antes de dormir. Valores entre 100 e 140 mg/dL são ideais.</BulletItem>
         <BulletItem>Considere um lanche leve com carboidratos de absorção lenta se estiver abaixo de 120 mg/dL ao deitar.</BulletItem>
         <BulletItem>Converse com seu endocrinologista sobre ajustes na insulina basal noturna.</BulletItem>
       </Section>
@@ -177,15 +177,15 @@ function AfterWalkDetail({ onClose }) {
       <Section label="Ótimo padrão!">
         <Card>
           <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55 }}>
-            Suas caminhadas estão produzindo uma redução média de 28 mg/dL nos primeiros 15 minutos após o exercício. Esse efeito é positivo para o controle glicêmico geral — continue assim!
+            Suas caminhadas estão produzindo uma redução média de 28 mg/dL nos primeiros 15 minutos após o exercício. Esse efeito é positivo para o controle glicêmico geral. Continue assim!
           </div>
         </Card>
       </Section>
 
       <Section label="Dicas para otimizar">
-        <BulletItem>Meça a glicose antes de caminhar — se estiver abaixo de 100 mg/dL, faça um lanche leve primeiro.</BulletItem>
+        <BulletItem>Meça a glicose antes de caminhar. Se estiver abaixo de 100 mg/dL, faça um lanche leve primeiro.</BulletItem>
         <BulletItem>Caminhadas de 20–30 minutos oferecem o melhor balanço entre benefício e segurança.</BulletItem>
-        <BulletItem>Após exercício intenso, fique atenta nas próximas 4 horas — a sensibilidade à insulina aumenta.</BulletItem>
+        <BulletItem>Após exercício intenso, fique atenta nas próximas 4 horas, pois a sensibilidade à insulina aumenta.</BulletItem>
         <BulletItem>Registre a atividade no app para que o modelo leve em conta no cálculo de risco noturno.</BulletItem>
       </Section>
 
