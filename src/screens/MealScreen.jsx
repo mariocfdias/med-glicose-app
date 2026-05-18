@@ -84,9 +84,6 @@ export function MealScreen({ onClose, onSave }) {
                 unit="g"
                 size="lg"
               />
-              <div style={{ marginTop: 4, textAlign: 'center', fontSize: 11.5, color: T.textMute }}>
-                Passos de 5 g · ajuste fino disponível em breve
-              </div>
             </div>
           </Card>
         </Section>

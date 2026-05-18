@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTheme } from '../theme/ThemeProvider.jsx';
 import { Icon } from '../icons/Icon.jsx';
 import { STATES } from '../data/states.js';
@@ -5,7 +6,8 @@ import { STATES } from '../data/states.js';
 export function AlertsScreen({ stateKey }) {
   const { T } = useTheme();
   const s = STATES[stateKey];
-  const items = [
+  const [dismissed, setDismissed] = useState(false);
+  const items = dismissed ? [] : [
     s.risk ? { tone: s.risk.whenMin === 0 ? 'danger' : 'warn', when: s.risk.whenMin === 0 ? 'agora' : `em ${s.risk.whenMin} min`, title: s.risk.kind === 'low' ? 'Leitura baixa prevista' : 'Leitura alta prevista', body: s.forecastMessage } : null,
     { tone: 'info', when: 'há 2 h', title: 'Pico pós‑almoço', body: 'Glicose subiu para 184 mg/dL após o almoço.' },
     { tone: 'ok', when: 'há 6 h', title: 'Boa noite', body: 'Você ficou 96% no alvo entre 0h e 6h.' },
@@ -17,7 +19,7 @@ export function AlertsScreen({ stateKey }) {
       <div style={{ fontSize: 11, color: T.textMute, letterSpacing: 1.2, textTransform: 'uppercase' }}>Notificações inteligentes</div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginTop: 4 }}>
         <div style={{ fontSize: 24, fontWeight: 500 }}>Alertas</div>
-        <button style={{ background: 'transparent', border: 'none', color: T.accent, fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>Marcar lidas</button>
+        <button onClick={() => setDismissed(true)} style={{ background: 'transparent', border: 'none', color: T.accent, fontSize: 13, fontFamily: 'inherit', cursor: 'pointer' }}>Marcar lidas</button>
       </div>
 
       <div style={{ marginTop: 14 }}>
