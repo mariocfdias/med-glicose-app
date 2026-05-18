@@ -69,7 +69,7 @@ export function AlertSettingsScreen({ onClose, onSave }) {
         </Card>
       </Section>
 
-      <Section label="Previsões">
+      <Section label="Predições">
         <Card>
           <ToggleRow
             iconName="sparkles" tone="warn"

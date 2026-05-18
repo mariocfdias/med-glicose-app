@@ -24,6 +24,14 @@ export function NightRiskGauge({ value, onClick }) {
         </div>
         {onClick && <div style={{ fontSize: 11, color: T.accent }}>Detalhes →</div>}
       </div>
+      <div style={{
+        display: 'inline-flex', alignItems: 'center', gap: 4,
+        background: T.accentSoft, borderRadius: 99, padding: '3px 10px',
+        marginBottom: 6,
+      }}>
+        <div style={{ width: 6, height: 6, borderRadius: 99, background: T.accent }}/>
+        <span style={{ fontSize: 11, color: T.accent, fontWeight: 500 }}>Sinal disponível a partir das 22h</span>
+      </div>
       <svg width="100%" viewBox="0 0 200 174" style={{ display: 'block', overflow: 'visible' }}>
         <defs>
           <linearGradient id="nightGaugeGrad" x1={cx - R} y1={cy} x2={cx + R} y2={cy} gradientUnits="userSpaceOnUse">

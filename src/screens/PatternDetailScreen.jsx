@@ -84,6 +84,12 @@ function NightRiskDetail({ onClose }) {
         <BulletItem>Considere um lanche leve com carboidratos de absorção lenta se estiver abaixo de 120 mg/dL ao deitar.</BulletItem>
         <BulletItem>Converse com seu endocrinologista sobre ajustes na insulina basal noturna.</BulletItem>
       </Section>
+
+      <div style={{ marginTop: 14 }}>
+        <FootnoteCard tone="info" icon={<Icon name="info" size={12}/>}>
+          Este sinal é atualizado a partir das <strong>22h</strong>. Antes desse horário o indicador reflete o histórico dos dias anteriores, sem considerar o contexto do dia atual.
+        </FootnoteCard>
+      </div>
     </DetailShell>
   );
 }

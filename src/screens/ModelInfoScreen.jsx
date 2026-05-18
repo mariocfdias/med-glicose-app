@@ -113,10 +113,44 @@ export function ModelInfoScreen({ onClose }) {
         </Card>
       </Section>
 
+      <Section label="Hipoglicemia noturna" hint="Sinal preditivo">
+        <Card>
+          <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, paddingBottom: 6 }}>
+            O modelo de hipoglicemia noturna estima a probabilidade de a glicose cair abaixo de 70 mg/dL durante o sono (00h–06h), combinando o histórico das últimas duas semanas com a tendência do final do dia.
+          </div>
+          <Divider/>
+          <div style={{ display: 'flex', gap: 8, marginTop: 8, marginBottom: 6 }}>
+            <MiniStat value="22h" label="Sinal disponível" tone="accent"/>
+            <MiniStat value="14 dias" label="Histórico usado" tone="warn"/>
+            <MiniStat value="≈91%" label="Acurácia A+B" tone="ok"/>
+          </div>
+          <Divider/>
+          <div style={{ fontSize: 13, color: T.text, lineHeight: 1.55, paddingTop: 4 }}>
+            <strong style={{ color: T.textHi }}>Por que isso importa:</strong> hipoglicemias noturnas são frequentemente assintomáticas — o paciente não acorda para perceber. Ter a estimativa disponível às 22h permite uma ação preventiva simples, como um lanche leve, reduzindo o risco sem interromper o sono.
+          </div>
+        </Card>
+
+        <FootnoteCard tone="info" icon={<Icon name="info" size={12}/>}>
+          Antes das 22h o indicador reflete apenas o histórico dos dias anteriores. A atualização com o contexto do dia atual ocorre a partir deste horário.
+        </FootnoteCard>
+      </Section>
+
       <div style={{ marginTop: 18, fontSize: 11, color: T.textMute, textAlign: 'center', lineHeight: 1.5 }}>
         Pontos do gráfico são ilustrativos.<br/>
         Métodos baseados em Clarke et al., Diabetes Care, 1987.
       </div>
+    </div>
+  );
+}
+
+function MiniStat({ value, label, tone = 'accent' }) {
+  const { T } = useTheme();
+  const c = tone === 'ok' ? T.ok : tone === 'warn' ? T.warn : tone === 'danger' ? T.danger : T.accent;
+  const cSoft = tone === 'ok' ? T.okSoft : tone === 'warn' ? T.warnSoft : tone === 'danger' ? T.dangerSoft : T.accentSoft;
+  return (
+    <div style={{ flex: 1, background: cSoft, borderRadius: 14, padding: '12px 8px', textAlign: 'center' }}>
+      <div style={{ fontSize: 18, fontWeight: 700, color: c, fontVariantNumeric: 'tabular-nums', lineHeight: 1 }}>{value}</div>
+      <div style={{ fontSize: 10.5, color: c, marginTop: 4, opacity: 0.85, lineHeight: 1.3 }}>{label}</div>
     </div>
   );
 }
