@@ -1,6 +1,6 @@
 export const STATES = {
   normal: {
-    label: 'Em alvo', tone: 'ok',
+    label: 'No alvo', tone: 'ok',
     now: 118, trend: 'estável', trendArrow: '→',
     forecastIn2h: 132, forecastConfidence: 88,
     forecastMessage: 'Você deve continuar dentro do alvo.',
@@ -36,7 +36,7 @@ export const STATES = {
     risk: { kind: 'high', whenMin: 0, level: 248 },
   },
   lowSoon: {
-    label: 'Queda prevista', tone: 'warn',
+    label: 'Queda prevista', tone: 'accent',
     now: 96, trend: 'caindo', trendArrow: '↘',
     forecastIn2h: 62, forecastConfidence: 84,
     forecastMessage: 'Você deve cair abaixo de 70 em cerca de 25 min.',

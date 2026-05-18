@@ -3,8 +3,8 @@ import { Icon } from '../icons/Icon.jsx';
 
 export function PatternRow({ icon, title, body, tone, onClick }) {
   const { T } = useTheme();
-  const c = tone === 'ok' ? T.ok : tone === 'warn' ? T.warn : T.danger;
-  const cSoft = tone === 'ok' ? T.okSoft : tone === 'warn' ? T.warnSoft : T.dangerSoft;
+  const c = tone === 'ok' ? T.ok : tone === 'warn' ? T.warn : tone === 'accent' ? T.accent : T.danger;
+  const cSoft = tone === 'ok' ? T.okSoft : tone === 'warn' ? T.warnSoft : tone === 'accent' ? T.accentSoft : T.dangerSoft;
   return (
     <button
       onClick={onClick}

@@ -8,8 +8,8 @@ import { Icon } from '../icons/Icon.jsx';
 import { STATES } from '../data/states.js';
 
 const KINDS = [
-  { value: 'fast', label: 'Rápida' },
-  { value: 'slow', label: 'Lenta' },
+  { value: 'fast', label: 'Bolus' },
+  { value: 'slow', label: 'Basal' },
 ];
 
 export function InsulinScreen({ onClose, onSave, stateKey = 'normal' }) {
@@ -20,8 +20,8 @@ export function InsulinScreen({ onClose, onSave, stateKey = 'normal' }) {
   const [actionState, setActionState] = useState('idle');
 
   const s = STATES[stateKey] ?? STATES.normal;
-  const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : T.danger;
-  const toneSoft = s.tone === 'ok' ? T.okSoft : s.tone === 'warn' ? T.warnSoft : T.dangerSoft;
+  const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : s.tone === 'accent' ? T.accent : T.danger;
+  const toneSoft = s.tone === 'ok' ? T.okSoft : s.tone === 'warn' ? T.warnSoft : s.tone === 'accent' ? T.accentSoft : T.dangerSoft;
 
   const handleSave = () => {
     setActionState('saved');

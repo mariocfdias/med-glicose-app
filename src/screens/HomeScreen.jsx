@@ -12,7 +12,7 @@ export function HomeScreen({ stateKey, setStateKey, onRegister }) {
   const { T } = useTheme();
   const s = STATES[stateKey];
   const data = useMemo(() => generateCurve(stateKey), [stateKey]);
-  const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : T.danger;
+  const toneColor = s.tone === 'ok' ? T.ok : s.tone === 'warn' ? T.warn : s.tone === 'accent' ? T.accent : T.danger;
   const stateOrder = ['normal', 'rising', 'high', 'lowSoon', 'low'];
   const [showInsight, setShowInsight] = useState(true);
   const [riskDismissed, setRiskDismissed] = useState(false);
