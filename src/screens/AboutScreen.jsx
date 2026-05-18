@@ -12,7 +12,7 @@ export function AboutScreen({ onClose }) {
       </div>
 
       <div style={{
-        marginTop: 18, paddingBottom: 18, textAlign: 'center',
+        marginTop: 18, paddingBottom: 20, textAlign: 'center',
         borderBottom: '1px solid ' + T.line,
       }}>
         <div style={{
@@ -21,6 +21,17 @@ export function AboutScreen({ onClose }) {
         }}>
           <span style={{ color: T.brand }}>Smart </span>
           <span style={{ color: T.accent }}>Med</span>
+        </div>
+        <div style={{ marginTop: 16, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <img
+            src="/logo-medlevensohn-min.png.webp"
+            alt="Medlevensohn"
+            style={{
+              height: 48,
+              width: 'auto',
+              filter: 'brightness(0) saturate(100%) invert(36%) sepia(90%) saturate(1200%) hue-rotate(109deg) brightness(66%)',
+            }}
+          />
         </div>
       </div>
 
